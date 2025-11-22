@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
-    "seed": "node ./scripts/seedFirestore.js"
+    "seed": "node ./scripts/seedFirestore.js",
+  "vercel-build": "npm install --legacy-peer-deps && vite build"
   },
   "dependencies": {
     "firebase": "^9.23.0",
