@@ -70,7 +70,11 @@ export default function App() {
         <Routes>
 
           {/* LOGIN PAGE */}
-          <Route path="/login" element={<AuthPage />} />
+         <Route
+  path="/login"
+  element={<AuthPage onLogin={() => setIsLoggedIn(true)} />}
+/>
+
 
           {/* STORE – only when logged in */}
           <Route
