@@ -84,10 +84,10 @@ export default function App() {
             }
           >
             <Route index element={<HomePage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="product/:id" element={<ProductDetailPage />} />
-            <Route path="quote" element={<QuoteRequestPage />} />
-            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/quote" element={<QuoteRequestPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
 
           {/* ANY UNKNOWN ROUTE */}
