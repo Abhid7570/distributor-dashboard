@@ -14,23 +14,25 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { QuoteRequestPage } from "./pages/QuoteRequestPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 
-// LOGIN
+// LOGIN PAGE
 import AuthPage from "./pages/AuthPage";
 
 // FIREBASE
 import { auth, db } from "./lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
+// LAYOUT
+import { Outlet, useNavigate } from "react-router-dom";
 
-// -----------------------------------------------------------------------
-// APP COMPONENT (CLIENT ONLY — distributor removed)
-// -----------------------------------------------------------------------
+
+// ✔ PUBLIC ROUTES → No login required
+// ✔ PROTECTED ROUTES → Login required
 export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // -----------------------------
-  // AUTH LISTENER – Detect user
+  // AUTH LISTENER
   // -----------------------------
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(async (user) => {
@@ -40,22 +42,17 @@ export default function App() {
         return;
       }
 
-      // Check if user record exists (optional)
-      const snap = await getDoc(doc(db, "users", user.uid));
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
 
-      if (snap.exists()) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(true); // default allow
-      }
-
+      setIsLoggedIn(snap.exists());
       setAuthLoading(false);
     });
 
     return () => unsub();
   }, []);
 
-  // Loading UI while Firebase checks user
+  // Show loading during Firebase check
   if (authLoading) {
     return (
       <div className="flex h-screen items-center justify-center text-xl">
@@ -69,28 +66,30 @@ export default function App() {
       <CartProvider>
         <Routes>
 
+          {/* PUBLIC ROUTES */}
+          <Route element={<ShopLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+          </Route>
+
           {/* LOGIN PAGE */}
-         <Route
-  path="/login"
-  element={<AuthPage onLogin={() => setIsLoggedIn(true)} />}
-/>
-
-
-          {/* STORE – only when logged in */}
           <Route
-            path="/"
+            path="/login"
+            element={<AuthPage onLogin={() => setIsLoggedIn(true)} />}
+          />
+
+          {/* PROTECTED ROUTES */}
+          <Route
             element={
               isLoggedIn ? <ShopLayout /> : <Navigate to="/login" replace />
             }
           >
-            <Route index element={<HomePage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/quote" element={<QuoteRequestPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
 
-          {/* ANY UNKNOWN ROUTE */}
+          {/* CATCH-ALL */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </CartProvider>
@@ -103,9 +102,6 @@ export default function App() {
 // -----------------------------------------------------------------------
 // SHOP LAYOUT COMPONENT
 // -----------------------------------------------------------------------
-import { Outlet, useNavigate } from "react-router-dom";
-
-
 function ShopLayout() {
   const navigate = useNavigate();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -118,7 +114,7 @@ function ShopLayout() {
       />
 
       <div className="flex-1">
-        <Outlet /> {/* Middle page content */}
+        <Outlet />
       </div>
 
       <Footer />
