@@ -5,7 +5,11 @@ import { useCart } from "../context/CartContext";
 import { auth } from "../lib/firebase";
 import { signOut } from "firebase/auth";
 
-export function Header({ onCartOpen }: { onCartOpen: () => void }) {
+type HeaderProps = {
+  onCartOpen: () => void;
+};
+
+export function Header({ onCartOpen }: HeaderProps) {
   const navigate = useNavigate();
   const { cartCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,15 +42,12 @@ export function Header({ onCartOpen }: { onCartOpen: () => void }) {
             <Package className="w-10 h-10 text-[#FFB400]" />
             <div>
               <h1 className="text-2xl font-bold tracking-tight">ConduitPro</h1>
-              <p className="text-xs text-gray-300">
-                Industrial Conduit Solutions
-              </p>
+              <p className="text-xs text-gray-300">Industrial Conduit Solutions</p>
             </div>
           </div>
 
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center space-x-8">
-
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -105,9 +106,9 @@ export function Header({ onCartOpen }: { onCartOpen: () => void }) {
             )}
           </nav>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* MOBILE MENU ICON */}
           <button
-            onClick={() => setMobileMenuOpen((p) => !p)}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
