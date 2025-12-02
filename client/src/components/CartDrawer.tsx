@@ -1,4 +1,4 @@
-import { X, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react';
+ import { X, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type CartDrawerProps = {

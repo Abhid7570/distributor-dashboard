@@ -7,7 +7,6 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../lib/firebase";
-
 import OrderDetail from "./OrderDetail";
 import QuoteDetail from "./QuoteDetail";
 import DeclinedQuoteDetail from "./DeclinedQuoteDetail";

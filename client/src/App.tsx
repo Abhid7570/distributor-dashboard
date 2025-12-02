@@ -102,10 +102,14 @@ export default function App() {
 // -----------------------------------------------------------------------
 // SHOP LAYOUT COMPONENT
 // -----------------------------------------------------------------------
+ 
 function ShopLayout() {
   const navigate = useNavigate();
   const [isCartOpen, setIsCartOpen] = useState(false);
-
+ const handleCheckout = () => {
+    setIsCartOpen(false);     // Close the Add to Cart Drawer
+    navigate("/checkout");    // Redirect to checkout page
+  };
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header
@@ -119,10 +123,10 @@ function ShopLayout() {
 
       <Footer />
 
-      <CartDrawer
+       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        onCheckout={() => navigate("/checkout")}
+        onCheckout={handleCheckout}
       />
     </div>
   );
